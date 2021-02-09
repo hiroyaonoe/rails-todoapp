@@ -1,19 +1,14 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  include SessionsHelper
+  before_action :logged_in_user, only: [:show, :edit, :update, :destroy]
+  before_action :current_user, only: [:show, :update, :destroy]
 
-  # GET /api/v1/users
-  def index
-    @users = User.all
-
-    render json: @users
-  end
-
-  # GET /api/v1/users/:id
+  # GET /api/v1/user
   def show
     render json: @user
   end
 
-  # POST /api/v1/users
+  # POST /api/v1/user
   def create
     @user = User.new(user_params)
 
@@ -24,7 +19,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /api/v1/users/:id
+  # PUT /api/v1/user
   def update
     if @user.update(user_params)
       render json: @user
@@ -33,20 +28,15 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  # DELETE /api/v1/users/1
+  # DELETE /api/v1/user
   def destroy
     @user.destroy
   end
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
-
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :email, :password)
+      params.permit(:name, :email, :password)
     end
 end
