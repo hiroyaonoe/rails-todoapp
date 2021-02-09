@@ -8,6 +8,18 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
+  # JSONにエンコードするときのフィールドを指定する
+  def to_json(options)
+    self.as_json(except: [:password_digest, :created_at, :updated_at]).to_json
+  end
+
+  # 渡された文字列のハッシュ値を返す
+  def self.digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                  BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
+
   private
 
     # メールアドレスをすべて小文字にする
