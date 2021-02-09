@@ -1,10 +1,8 @@
 Rails.application.routes.draw do
-  namespace :api, defaults: {format: 'json'} do
+  namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
-      get '/user', to: 'users#show'
-      post '/user', to: 'users#create'
-      put '/user', to: 'users#update'
-      delete '/user', to: 'users#destroy'
+      resource  :user,  only: [:create, :show, :update, :destroy]
+      resources :tasks, only: [:index, :create, :show, :update, :destroy]
     end
   end
 end

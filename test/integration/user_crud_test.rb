@@ -6,10 +6,10 @@ class UserCrudTest < ActionDispatch::IntegrationTest
   end
 
   test "should update, show, destroy, and create user" do
-    log_in_as(@user)
-    put api_v1_user_url, params: {name: "updated",
-                                  email: "updated@email.com",
-                                  password: "updated"}, as: :json
+    log_in_as(@user.id)
+    put api_v1_user_url, params: { name: "updated",
+                                   email: "updated@email.com",
+                                   password: "updated" }, as: :json
     assert_response :ok
 
     get api_v1_user_url, as: :json
@@ -29,9 +29,7 @@ class UserCrudTest < ActionDispatch::IntegrationTest
       post api_v1_user_url, params: {name: @user.name,
                                      email: @user.email,
                                      password: "password"}, as: :json
-      assert_response :created
     end
     assert_response :created
-
   end
 end

@@ -33,13 +33,6 @@ class Api::V1::UsersController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      unless @user ||= User.find_by(id: cookies[:id])
-        render json: "Unauthorized", status: :unauthorized
-      end
-    end
-
     # Only allow a list of trusted parameters through.
     def user_params
       params.permit(:name, :email, :password)
