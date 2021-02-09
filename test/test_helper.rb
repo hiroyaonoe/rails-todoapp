@@ -10,7 +10,7 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
-  def log_in_as(user)
-    cookies[:id] = @user.id
+  def log_in_as(id)
+    cookies[:id] = id
   end
 end

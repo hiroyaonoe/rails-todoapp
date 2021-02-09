@@ -16,8 +16,7 @@ class Api::V1::TasksController < ApplicationController
 
   # POST /api/v1/tasks
   def create
-    @task = Task.new(task_params)
-
+    @task = @user.tasks.new(task_params)
     if @task.save
       render json: @task, status: :created
     else
