@@ -10,9 +10,10 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      log_in
       render json: @user, status: :created
     else
-      render json: "Bad Request", status: :bad_request
+      render json: @user.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -21,7 +22,7 @@ class Api::V1::UsersController < ApplicationController
     if @user.update(user_params)
       render json: @user, status: :ok
     else
-      render json: "Bad Request", status: :bad_request
+      render json: @user.errors.full_messages, status: :unprocessable_entity
     end
   end
 

@@ -1,10 +1,20 @@
 class Api::V1::TasksController < ApplicationController
   before_action :set_user
+  before_action :set_tasks
   before_action :set_task, only: [:show, :update, :destroy]
 
   # GET /api/v1/tasks
   def index
-    @tasks = Task.all
+    if params[:start]
+      @tasks = @tasks.where("deadline >= ?", params[:start])
+    end
+    if params[:end]
+      @tasks = @tasks.where("deadline <= ?", params[:end])
+    end
+    if params[:iscomp]
+      @tasks = @tasks.where("is_completed = ?",
+                          ActiveModel::Type::Boolean.new.cast(params[:iscomp]))
+    end
 
     render json: @tasks, status: :ok
   end
@@ -16,11 +26,11 @@ class Api::V1::TasksController < ApplicationController
 
   # POST /api/v1/tasks
   def create
-    @task = @user.tasks.new(task_params)
+    @task = @tasks.new(task_params)
     if @task.save
       render json: @task, status: :created
     else
-      render json: "Bad Request", status: :bad_request
+      render json: @task.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +39,7 @@ class Api::V1::TasksController < ApplicationController
     if @task.update(task_params)
       render json: @task, status: :ok
     else
-      render json: "Bad Request", status: :bad_request
+      render json: @task.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -40,9 +50,15 @@ class Api::V1::TasksController < ApplicationController
   end
 
   private
+
+    # そのユーザーが持つタスクのみを抽出
+    def set_tasks
+      @tasks = @user.tasks
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find_by(params[:id])
+      @task = @tasks.find_by(id: params[:id])
     end
 
     # Only allow a list of trusted parameters through.

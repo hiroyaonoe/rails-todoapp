@@ -7,4 +7,8 @@ class ApplicationController < ActionController::API
       render json: "Unauthorized", status: :unauthorized
     end
   end
+
+  def log_in
+    cookies[:id] = @user.id
+  end
 end

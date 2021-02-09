@@ -4,12 +4,23 @@ task1:
   title: one title
   content: one content
   is_completed: false
-  deadline: 2021-02-09
+  deadline: 2021-02-08
   user: one
 
-task2:
-  title: two title
-  content: two content
+<% 5.times do |n| %>
+task_t_<%= n %>:
+  title: title_t_<%= n %>
+  content: content_<%= n %>
   is_completed: false
-  deadline: 2021-02-09
+  deadline: <%= Date.new(2021, 2, 9) + n.days%>
   user: one
+<% end %>
+
+<% 5.times do |n| %>
+task_f_<%= n %>:
+  title: title_f_<%= n %>
+  content: content_<%= n %>
+  is_completed: true
+  deadline: <%= Date.new(2021, 2, 9) + n.days%>
+  user: one
+<% end %>
