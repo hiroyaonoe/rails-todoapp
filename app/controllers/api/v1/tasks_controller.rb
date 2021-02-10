@@ -1,5 +1,5 @@
 class Api::V1::TasksController < ApplicationController
-  before_action :set_user
+  before_action :authenticate_user
   before_action :set_allowed_tasks
   before_action :set_task, only: [:show, :update, :destroy]
 

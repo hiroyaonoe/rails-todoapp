@@ -1,14 +1,10 @@
 class ApplicationController < ActionController::API
-  include ActionController::Cookies
+  include ActionController::HttpAuthentication::Token::ControllerMethods
 
-  # リクエストを送ったユーザーの情報を設定
-  def set_user
-    unless @user ||= User.find_by(id: cookies[:id])
-      render json: "Unauthorized", status: :unauthorized
+  # トークンに該当するユーザーを検索する
+  def authenticate_user
+    authenticate_or_request_with_http_token do |token, options|
+      @user ||= User.find_by(session_token: token)
     end
-  end
-
-  def log_in
-    cookies[:id] = @user.id
   end
 end
