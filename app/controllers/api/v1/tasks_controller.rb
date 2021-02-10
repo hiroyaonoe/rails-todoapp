@@ -1,6 +1,6 @@
 class Api::V1::TasksController < ApplicationController
   before_action :set_user
-  before_action :set_tasks
+  before_action :set_allowed_tasks
   before_action :set_task, only: [:show, :update, :destroy]
 
   # GET /api/v1/tasks
@@ -52,11 +52,11 @@ class Api::V1::TasksController < ApplicationController
   private
 
     # そのユーザーが持つタスクのみを抽出
-    def set_tasks
+    def set_allowed_tasks
       @tasks = @user.tasks
     end
 
-    # Use callbacks to share common setup or constraints between actions.
+    # パスパラメータからタスクを検索してセットする
     def set_task
       @task = @tasks.find_by(id: params[:id])
     end
