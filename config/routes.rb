@@ -3,8 +3,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource  :user,  only: [:create, :show, :update, :destroy]
       resources :tasks, only: [:index, :create, :show, :update, :destroy]
-      post   '/login',  to: 'sessions#create'
-      delete '/logout', to: 'sessions#destroy'
+      post   '/login',  to: 'auth#create'
+      delete '/logout', to: 'auth#destroy'
     end
   end
 end

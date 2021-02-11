@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_many :tasks, dependent: :destroy
-  attr_accessor :session_token
+  attr_accessor :auth_token
   before_save   :downcase_email
   validates :name,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -27,15 +27,15 @@ class User < ApplicationRecord
     SecureRandom.urlsafe_base64
   end
 
-  # セッション用トークンをデータベースに記憶する
-  def set_token
-    self.session_token = User.new_token
-    update_attribute(:session_digest, User.digest(session_token))
+  # 認証トークンをデータベースに記憶する
+  def set_auth_token
+    self.auth_token = User.new_token
+    update_attribute(:auth_digest, User.digest(auth_token))
   end
 
-  # セッション用トークンをデータベースから削除する
-  def delete_token
-    update_attribute(:session_digest, nil)
+  # 認証トークンをデータベースから削除する
+  def delete_auth_token
+    update_attribute(:auth_digest, nil)
   end
 
   private

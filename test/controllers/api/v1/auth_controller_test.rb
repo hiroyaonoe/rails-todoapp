@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Api::V1::SessionsControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @header = get_auth_header(@user)

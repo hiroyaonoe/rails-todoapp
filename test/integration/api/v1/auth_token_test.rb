@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Api::V1::SessionsTokenTest < ActionDispatch::IntegrationTest
+class Api::V1::AuthTokenTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @task = tasks(:task1)
@@ -21,8 +21,8 @@ class Api::V1::SessionsTokenTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-  test "トークンを付与していなければusers#create,session#create以外はUnauthorized" do
-    # session
+  test "トークンを付与していなければusers#create,auth#create以外はUnauthorized" do
+    # auth
     delete api_v1_logout_url
     assert_response :unauthorized
     
