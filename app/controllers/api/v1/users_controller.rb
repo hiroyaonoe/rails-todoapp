@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authenticate_user, only: [:show, :update, :destroy]
+  before_action :authenticate, only: [:show, :update, :destroy]
 
   # GET /api/v1/user
   def show
@@ -12,7 +12,7 @@ class Api::V1::UsersController < ApplicationController
     if @user.save
       render json: @user, status: :created
     else
-      render json: @user.errors.full_messages, status: :unprocessable_entity
+      error_response(:unprocessable_entity, @user.errors.full_messages.join)
     end
   end
 
@@ -21,7 +21,7 @@ class Api::V1::UsersController < ApplicationController
     if @user.update(user_params)
       render json: @user, status: :ok
     else
-      render json: @user.errors.full_messages, status: :unprocessable_entity
+      error_response(:unprocessable_entity, @user.errors.full_messages.join)
     end
   end
 

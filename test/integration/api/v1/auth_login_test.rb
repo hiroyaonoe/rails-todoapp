@@ -19,6 +19,8 @@ class Api::V1::AuthLoginTest < ActionDispatch::IntegrationTest
     assert_response :ok
     get api_v1_user_url, headers: { "Authorization": "Token " << token }
     assert_response :unauthorized
+    res = JSON.parse(@response.body)
+    assert_equal("HTTP Token: Access denied.", res["error"])
   end
 
   test "トークンを付与していなければusers#create,auth#create以外はUnauthorized" do
@@ -68,13 +70,15 @@ class Api::V1::AuthLoginTest < ActionDispatch::IntegrationTest
     post api_v1_login_url, params: { email: @user.email,
                                      password: "wrong password" }
     assert_response :unauthorized
-    assert_equal("Login Failed", @response.body)
+    res = JSON.parse(@response.body)
+    assert_equal("Login Failed.", res["error"])
   end
 
   test "emailが異なればLogin Failed" do
     post api_v1_login_url, params: { email: "wrong@email.com",
                                      password: "password" }
     assert_response :unauthorized
-    assert_equal("Login Failed", @response.body)
+    res = JSON.parse(@response.body)
+    assert_equal("Login Failed.", res["error"])
   end
 end

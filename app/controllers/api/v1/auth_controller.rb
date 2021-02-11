@@ -1,5 +1,5 @@
 class Api::V1::AuthController < ApplicationController
-  before_action :authenticate_user, only: :destroy
+  before_action :authenticate, only: :destroy
 
   # POST /api/v1/login
   def create
@@ -9,7 +9,7 @@ class Api::V1::AuthController < ApplicationController
       render json: { token: @user.access_token },
              status: :created
     else
-      render plain: "Login Failed", status: :unauthorized
+      error_response(:unauthorized, "Login Failed.")
     end
   end
 
