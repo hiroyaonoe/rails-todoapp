@@ -10,7 +10,9 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
-  def log_in_as(id)
-    post
+  def get_auth_header(user)
+    post api_v1_login_url, params: { email: user.email,
+                                     password: "password" }
+    { "Authorization": "Token " << @response.body }
   end
 end
