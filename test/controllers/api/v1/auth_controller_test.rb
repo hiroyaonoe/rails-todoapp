@@ -18,9 +18,9 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
 
   test "アクセストークン中のユーザーIDが改ざんされていればUnauthorized" do
     access_token = get_token_of(@user)
-    access_table = encode_token(access_token)
+    access_table = decode_token(access_token)
     access_table["id"] = @other_user.id
-    altered_token = decode_token(access_table)
+    altered_token = encode_token(access_table)
 
     # other_userがトークンを発行していない場合
     get api_v1_user_url, headers: get_header_from_token(altered_token)
@@ -34,11 +34,11 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
 
   test "アクセストークン中の認証トークンが改ざんされていればUnauthorized" do
     access_token = get_token_of(@user)
-    access_table = encode_token(access_token)
+    access_table = decode_token(access_token)
     other_token = get_token_of(@other_user)
-    other_table = encode_token(other_token)
+    other_table = decode_token(other_token)
     access_table["auth_token"] = other_table["auth_token"]
-    altered_token = decode_token(access_table)
+    altered_token = encode_token(access_table)
 
     get api_v1_user_url, headers: get_header_from_token(altered_token)
     assert_response :unauthorized
@@ -46,9 +46,9 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
 
   test "アクセストークン中の認証トークンがnilならばUnauthorized" do
     access_token = get_token_of(@user)
-    access_table = encode_token(access_token)
+    access_table = decode_token(access_token)
     access_table.delete("auth_token")
-    altered_token = decode_token(access_table)
+    altered_token = encode_token(access_table)
 
     get api_v1_user_url, headers: get_header_from_token(altered_token)
     assert_response :unauthorized
