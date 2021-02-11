@@ -1,5 +1,5 @@
 class Api::V1::TasksController < ApplicationController
-  before_action :set_user
+  before_action :authenticate
   before_action :set_allowed_tasks
   before_action :set_task, only: [:show, :update, :destroy]
 
@@ -13,9 +13,8 @@ class Api::V1::TasksController < ApplicationController
     end
     if params[:iscomp]
       @tasks = @tasks.where("is_completed = ?",
-                          ActiveModel::Type::Boolean.new.cast(params[:iscomp]))
+                            ActiveModel::Type::Boolean.new.cast(params[:iscomp]))
     end
-
     render json: @tasks, status: :ok
   end
 
@@ -30,7 +29,7 @@ class Api::V1::TasksController < ApplicationController
     if @task.save
       render json: @task, status: :created
     else
-      render json: @task.errors.full_messages, status: :unprocessable_entity
+      error_response(:unprocessable_entity, @task.errors.full_messages.join)
     end
   end
 
@@ -39,7 +38,7 @@ class Api::V1::TasksController < ApplicationController
     if @task.update(task_params)
       render json: @task, status: :ok
     else
-      render json: @task.errors.full_messages, status: :unprocessable_entity
+      error_response(:unprocessable_entity, @task.errors.full_messages.join)
     end
   end
 
