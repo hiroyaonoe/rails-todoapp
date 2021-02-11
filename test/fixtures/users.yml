@@ -2,8 +2,10 @@ one:
   name: one name
   email: example1@example.com
   password_digest: <%= User.digest('password') %>
+  session_digest: nil
 
 two:
   name: two name
   email: example2@example.com
   password_digest: <%= User.digest('password') %>
+  session_digest: nil
