@@ -6,8 +6,12 @@ class ApplicationController < ActionController::API
     authenticate_or_request_with_http_token do |token, options|
       auth_table = decode_token(token)
       @user ||= User.find_by(id: auth_table["id"])
-      BCrypt::Password.new(@user.session_digest).
-                       is_password?(auth_table["session_token"])
+      if @user.session_digest
+        BCrypt::Password.new(@user.session_digest).
+                         is_password?(auth_table["session_token"])
+      else
+        false
+      end
     end
   end
 

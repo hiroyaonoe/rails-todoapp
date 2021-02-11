@@ -11,8 +11,9 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   def get_auth_header(user)
-    post api_v1_login_url, params: { email: user.email,
+    post api_v1_login_path, params: { email: user.email,
                                      password: "password" }
-    { "Authorization": "Token " << @response.body }
+    res = JSON.parse(@response.body)
+    { "Authorization": "Token " << res["token"] }
   end
 end
