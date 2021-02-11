@@ -35,9 +35,7 @@ class User < ApplicationRecord
 
   # セッション用トークンをデータベースから削除する
   def delete_token
-    byebug
     update_attribute(:session_digest, nil)
-    byebug
   end
 
   private

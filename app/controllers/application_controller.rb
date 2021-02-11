@@ -3,9 +3,18 @@ class ApplicationController < ActionController::API
 
   # トークンに該当するユーザーを検索する
   def authenticate_user
-    byebug
     authenticate_or_request_with_http_token do |token, options|
-      @user ||= User.find_by(session_digest: User.digest(token)) # TODO: Tokenを認証するにはユーザーIDを先に知っていないといけない
+      auth_table = decode_token(token)
+      @user ||= User.find_by(id: auth_table["id"])
+      BCrypt::Password.new(@user.session_digest).
+                       is_password?(auth_table["session_token"])
     end
   end
+
+  private 
+
+    # 受け取ったトークンをデコードしてセッション用トークンとUserIDを返す
+    def decode_token(joined_token)
+      JSON.parse(Base64.decode64(CGI.unescape(joined_token)))
+    end
 end
