@@ -33,16 +33,16 @@ Authorization: Token (取得したトークン)
 }
 ```
 ### レスポンスボディ
-| code | 補足 |
-|:---:|:---:|
-| 204 | created |
 ```
 {
     "token":"xxxxxxxxxxxx"
 }
 ```
+| code | 補足 |
+|:---:|:---:|
+| 204 | created |
 
-## DELETE /login
+## DELETE /logout
 ### 概要
 トークンを破棄する．
 ### 認証
@@ -50,10 +50,10 @@ Authorization: Token (取得したトークン)
 ### リクエストボディ
 なし
 ### レスポンスボディ
+なし
 | code | 補足 |
 |:---:|:---:|
-| 200 | ok |
-なし
+| 200 | ok |  
 
 ## GET /user
 ### 概要
@@ -63,9 +63,6 @@ user情報を取得する
 ### リクエストボディ
 なし
 ### レスポンスボディ
-| code | 補足 |
-|:---:|:---:|
-| 200 | ok |
 ```
 {
     "id":1,
@@ -73,6 +70,9 @@ user情報を取得する
     "email":"example@example.com"
 }
 ```
+| code | 補足 |
+|:---:|:---:|
+| 200 | ok |
 
 ## POST /user
 ### 概要
@@ -89,9 +89,6 @@ user情報を取得する
 ```
 
 ### レスポンスボディ
-| code | 補足 |
-|:---:|:---:|
-| 204 | created |
 ```
 {
     "id":1,
@@ -99,6 +96,9 @@ user情報を取得する
     "email":"example@example.com"
 }
 ```
+| code | 補足 |
+|:---:|:---:|
+| 204 | created |
 
 ## PATCH/PUT /user
 ### 概要
@@ -114,9 +114,6 @@ user情報を取得する
 }
 ```
 ### レスポンスボディ
-| code | 補足 |
-|:---:|:---:|
-| 200 | ok |
 ```
 {
     "id":1,
@@ -124,6 +121,9 @@ user情報を取得する
     "email":"example@example.com"
 }
 ```
+| code | 補足 |
+|:---:|:---:|
+| 200 | ok |
 
 ## DELETE /user
 ### 概要
@@ -133,10 +133,10 @@ user情報を取得する
 ### リクエストボディ
 なし
 ### レスポンスボディ
+なし
 | code | 補足 |
 |:---:|:---:|
 | 200 | ok |
-なし
 
 ## GET /tasks
 ### 概要
@@ -152,9 +152,6 @@ user情報を取得する
 ### リクエストボディ
 なし
 ### レスポンスボディ
-| code | 補足 |
-|:---:|:---:|
-| 200 | ok |
 ```
 [
   {
@@ -166,13 +163,16 @@ user情報を取得する
   },
   {
       "id":2,
-      "title":"task1,
+      "title":"task1",
       "content":"This is a content.",
       "is_completed":true,
       "deadline":"2020-02-11"
   }
 ]
 ```
+| code | 補足 |
+|:---:|:---:|
+| 200 | ok |
 
 ## GET /tasks/:id
 ### 概要
@@ -186,18 +186,18 @@ idで指定されたタスクを取得する
 ### リクエストボディ
 なし
 ### レスポンスボディ
-| code | 補足 |
-|:---:|:---:|
-| 200 | ok |
 ```
 {
     "id":1,
-    "title":"task1,
+    "title":"task1",
     "content":"This is a content.",
     "is_completed":false,
     "deadline":"2020-02-11"
 }
 ```
+| code | 補足 |
+|:---:|:---:|
+| 200 | ok |
 
 ## CREATE /task
 ### 概要
@@ -207,25 +207,25 @@ idで指定されたタスクを取得する
 ### リクエストボディ
 ```
 {
-    "title":"task1,
+    "title":"task1",
     "content":"This is a content.",
     "is_completed":false,
     "deadline":"2020-02-11"
 }
 ```
 ### レスポンスボディ
-| code | 補足 |
-|:---:|:---:|
-| 204 | created |
 ```
 {
     "id":1,
-    "title":"task1,
+    "title":"task1",
     "content":"This is a content.",
     "is_completed":false,
     "deadline":"2020-02-11"
 }
 ```
+| code | 補足 |
+|:---:|:---:|
+| 204 | created |
 
 ## PUT /tasks/:id
 ### 概要
@@ -239,25 +239,25 @@ idで指定されたタスクを取得する
 ### リクエストボディ
 ```
 {
-    "title":"task1,
+    "title":"task1",
     "content":"This is a content.",
     "is_completed":false,
     "deadline":"2020-02-11"
 }
 ```
 ### レスポンスボディ
-| code | 補足 |
-|:---:|:---:|
-| 200 | ok |
 ```
 {
     "id":1,
-    "title":"task1,
+    "title":"task1",
     "content":"This is a content.",
     "is_completed":false,
     "deadline":"2020-02-11"
 }
 ```
+| code | 補足 |
+|:---:|:---:|
+| 200 | ok |
 
 ## DELETE /tasks/:id
 ### 概要
@@ -271,7 +271,7 @@ idで指定されたタスクを取得する
 ### リクエストボディ
 なし
 ### レスポンスボディ
+なし
 | code | 補足 |
 |:---:|:---:|
 | 200 | ok |
-なし
