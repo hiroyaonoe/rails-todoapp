@@ -63,4 +63,18 @@ class Api::V1::AuthLoginTest < ActionDispatch::IntegrationTest
     end
     assert_response :unauthorized
   end
+
+  test "パスワードが異なればLogin Failed" do
+    post api_v1_login_url, params: { email: @user.email,
+                                     password: "wrong password" }
+    assert_response :unauthorized
+    assert_equal("Login Failed", @response.body)
+  end
+
+  test "emailが異なればLogin Failed" do
+    post api_v1_login_url, params: { email: "wrong@email.com",
+                                     password: "password" }
+    assert_response :unauthorized
+    assert_equal("Login Failed", @response.body)
+  end
 end
