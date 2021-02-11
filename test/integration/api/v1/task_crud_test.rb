@@ -3,7 +3,7 @@ require "test_helper"
 class Api::V1::TaskCrudTest < ActionDispatch::IntegrationTest
   setup do
     @task = tasks(:task1)
-    @header = get_auth_header(@task.user)
+    @header = get_header_from_user(@task.user)
   end
 
   test "should update, show, destroy, and create tasks" do

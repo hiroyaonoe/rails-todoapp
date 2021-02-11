@@ -6,7 +6,7 @@ class Api::V1::AuthController < ApplicationController
     @user = User.find_by(email: params[:email].downcase)
     if @user && @user.authenticate(params[:password])
       @user.set_auth_token
-      render json: { token: access_token(@user.id, @user.auth_token) },
+      render json: { token: @user.access_token },
              status: :created
     else
       render json: "Login Failed", status: :unauthorized
@@ -18,12 +18,4 @@ class Api::V1::AuthController < ApplicationController
     @user.delete_auth_token if @user
     render status: :ok
   end
-
-  private
-
-    # 認証トークンとUserIDを結合したアクセストークンを返す
-    def access_token(id, auth_token)
-      access_table = { id: id, auth_token: auth_token }
-      CGI.escape(Base64.encode64(JSON.dump(access_table)))
-    end
 end

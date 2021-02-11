@@ -38,6 +38,18 @@ class User < ApplicationRecord
     update_attribute(:auth_digest, nil)
   end
 
+  # 認証トークンとUserIDを結合してエンコードしたアクセストークンを返す
+  def access_token
+    access_table = { id: id, auth_token: auth_token }
+    CGI.escape(Base64.encode64(JSON.dump(access_table)))
+  end
+
+  # 受け取ったアクセストークンをデコードして認証トークンとUserIDを返す
+  def self.decode_token(access_token)
+    access_table = JSON.parse(Base64.decode64(CGI.unescape(access_token)))
+    return access_table["id"], access_table["auth_token"]
+  end
+
   private
 
     # メールアドレスをすべて小文字にする

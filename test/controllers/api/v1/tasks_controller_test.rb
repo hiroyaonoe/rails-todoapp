@@ -3,7 +3,7 @@ require "test_helper"
 class Api::V1::TasksControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
-    @header = get_auth_header(@user)
+    @header = get_header_from_user(@user)
   end
 
   test "検索範囲の開始を指定して検索" do

@@ -3,7 +3,7 @@ require "test_helper"
 class Api::V1::UserCrudTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
-    @header = get_auth_header(@user)
+    @header = get_header_from_user(@user)
   end
 
   test "should update, show, destroy, and create user" do
