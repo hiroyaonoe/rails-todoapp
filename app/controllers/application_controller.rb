@@ -6,9 +6,7 @@ class ApplicationController < ActionController::API
     authenticate_or_request_with_http_token do |token, options|
       user_id, auth_token = User.decode_token(token)
       @user ||= User.find_by(id: user_id)
-      if @user && @user.auth_digest
-        BCrypt::Password.new(@user.auth_digest).is_password?(auth_token)
-      end
+      @user && @user.authenticated?(auth_token) && !@user.token_expired?
     end
   end
 end

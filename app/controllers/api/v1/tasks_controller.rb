@@ -13,7 +13,7 @@ class Api::V1::TasksController < ApplicationController
     end
     if params[:iscomp]
       @tasks = @tasks.where("is_completed = ?",
-                          ActiveModel::Type::Boolean.new.cast(params[:iscomp]))
+                            ActiveModel::Type::Boolean.new.cast(params[:iscomp]))
     end
 
     render json: @tasks, status: :ok

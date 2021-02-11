@@ -7,3 +7,10 @@ two:
   name: two name
   email: example2@example.com
   password_digest: <%= User.digest('password') %>
+
+expired:
+  name: expired
+  email: expired@example.com
+  password_digest: <%= User.digest('password') %>
+  auth_digest: <%= User.digest('authenticate_token') %>
+  logined_at: <%= 3.hour.ago %>

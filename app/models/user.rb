@@ -22,6 +22,12 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
+  # トークンがダイジェストと一致したらtrueを返す
+  def authenticated?(auth_token)
+    return false if auth_digest.nil?
+    BCrypt::Password.new(auth_digest).is_password?(auth_token)
+  end
+
   # ランダムなトークンを返す
   def self.new_token
     SecureRandom.urlsafe_base64
@@ -31,11 +37,18 @@ class User < ApplicationRecord
   def set_auth_token
     self.auth_token = User.new_token
     update_attribute(:auth_digest, User.digest(auth_token))
+    update_attribute(:logined_at, Time.zone.now)
   end
 
   # 認証トークンをデータベースから削除する
   def delete_auth_token
     update_attribute(:auth_digest, nil)
+    update_attribute(:logined_at, nil)
+  end
+
+  # トークンの有効期限が切れていればtrue
+  def token_expired?
+    logined_at < 1.hours.ago
   end
 
   # 認証トークンとUserIDを結合してエンコードしたアクセストークンを返す

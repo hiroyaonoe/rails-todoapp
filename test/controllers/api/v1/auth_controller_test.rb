@@ -53,4 +53,13 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
     get api_v1_user_url, headers: get_header_from_token(altered_token)
     assert_response :unauthorized
   end
+
+  test "アクセストークンの期限が切れているならばUnauthorized" do
+    expired_user = users(:expired)
+    access_table = { "id": expired_user.id, "auth_token": 'authenticate_token' }
+    access_token = encode_token(access_table)
+    expired_header = get_header_from_token(access_token)
+    get api_v1_user_url, headers: expired_header
+    assert_response :unauthorized
+  end
 end

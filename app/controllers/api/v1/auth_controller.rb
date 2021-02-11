@@ -9,7 +9,7 @@ class Api::V1::AuthController < ApplicationController
       render json: { token: @user.access_token },
              status: :created
     else
-      render json: "Login Failed", status: :unauthorized
+      render text: "Login Failed", status: :unauthorized
     end
   end
 
