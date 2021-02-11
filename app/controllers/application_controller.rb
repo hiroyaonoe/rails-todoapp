@@ -8,7 +8,9 @@ class ApplicationController < ActionController::API
 
   # エラー用のJSONとステータスコードを返す
   def error_response(status, message)
-    render json: { status: status, error: message }, status: status
+    render json: { status: Rack::Utils::SYMBOL_TO_STATUS_CODE[status],
+                   error: message },
+           status: status
   end
 
   private
