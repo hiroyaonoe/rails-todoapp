@@ -21,7 +21,11 @@ class Api::V1::SessionsTokenTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-  test "トークンを付与していなければusers#create以外はUnauthorized" do
+  test "トークンを付与していなければusers#create,session#create以外はUnauthorized" do
+    # session
+    delete api_v1_logout_url
+    assert_response :unauthorized
+    
     # user
     put api_v1_user_url, params: { name: "updated",
                                    email: "updated@email.com",

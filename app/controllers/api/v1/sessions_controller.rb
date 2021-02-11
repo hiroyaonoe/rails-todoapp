@@ -1,4 +1,5 @@
 class Api::V1::SessionsController < ApplicationController
+  before_action :authenticate_user, only: :destroy
 
   # POST /api/v1/login
   def create
@@ -22,7 +23,7 @@ class Api::V1::SessionsController < ApplicationController
   private
 
     # セッション用トークンとUserIDを結合したトークンを返す
-    def encoded_token(id,session_token)
+    def encoded_token(id, session_token)
       auth_table = { id: id, session_token: session_token }
       CGI.escape(Base64.encode64(JSON.dump(auth_table)))
     end

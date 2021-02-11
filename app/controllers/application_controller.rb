@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
-  # トークンに該当するユーザーを検索する
+  # ユーザーのトークンが一致するか検証する
   def authenticate_user
     authenticate_or_request_with_http_token do |token, options|
       auth_table = decode_token(token)
@@ -9,8 +9,6 @@ class ApplicationController < ActionController::API
       if @user.session_digest
         BCrypt::Password.new(@user.session_digest).
                          is_password?(auth_table["session_token"])
-      else
-        false
       end
     end
   end
